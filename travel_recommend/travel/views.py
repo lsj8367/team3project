@@ -1,5 +1,14 @@
 from django.shortcuts import render
 from django.http.response import HttpResponseRedirect
+from pymongo import MongoClient
+
+'''
+client = MongoClient('mongodb://localhost:27017/')
+print(client.list_database_names()) # 데이터 베이스 목록 조회
+
+db = client['데이터베이스 이름']
+conn = db['컬렉션이름']
+'''
 
 # Create your views here.
 def MainFunc(request):
@@ -29,5 +38,4 @@ def SearchFunction(request):
         return render(request, 'main.html', context)
     
 def DetailFunction(request):
-    
     return render(request, 'datail.html')
