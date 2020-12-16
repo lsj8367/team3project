@@ -16,4 +16,13 @@
 ##### 1. git add 파일 or git add . >>> .은 모두 Staged에 올린다.
 ##### 2. git commit -m "커밋 메세지"
 
-#### 여기서
+
+* 추가적으로 branch 만들었을때
+ * git checkout master <<< 로컬 저장소의 master 브랜치로 이동
+ * git merge 만든브랜치명
+ * git push
+* 그냥 마스터에서 진행
+ * git push 진행
+
+github 사이트로 들어와서 자신의 원격 저장
+
