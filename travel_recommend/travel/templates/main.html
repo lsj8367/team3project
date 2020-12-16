@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+div#header{
+    background-color : #A9BCF5;
+    position : fixed;
+    width : 100%;
+    top : 0;
+    left : 0;
+    height : 10rem;
+	text-align: center;
+	
+}
+
+div#search-box{
+	display : inline-block;
+	text-align: center;
+	background-color: rgba(255,255,255,0);
+	border: 2px solid white;
+	border-radius: 20px;
+	width : 40%;
+	margin-top : 30px;
+	background-color: white;
+	
+}
+
+input#search{
+	width: 80%;
+	height: 50px;
+	border-radius: 20px;
+	border: 0px;
+	vertical-align: middle;
+}
+
+button#search-icon{
+	
+	vertical-align: middle;
+	width : 30px;
+	height : 30px;
+	border: 0px;
+	background-color: rgba(255,255,255,0);
+	
+}
+
+input#start_date, input#end_date{
+	border-radius: 20px;
+	border: 1px solid white;
+}
+
+div#contents{ 
+	margin-top : 10px;
+	position: fixed;
+	top: 10rem; 
+	left: 0; 
+	right: 0; 
+	bottom: 0; 
+	overflow: auto; 
+}
+
+div#root-recommend{
+	width : 100%;
+	margin-top : 10px;
+	border: 2px solid #A9BCF5;
+}
+
+div#weather{
+	width : 100%;
+	margin-top : 10px;
+	border: 2px solid #A9BCF5;
+}
+
+div#tour-recommend{
+	width : 100%;
+	margin-top : 10px;
+	border: 2px solid #A9BCF5;
+}
+
+div#restaurant-recommend{
+	width : 100%;
+	margin-top : 10px;
+	border: 2px solid #A9BCF5;
+}
+
+.card {
+	display : inline-block;
+	background: #fff;
+	border-radius: 2px;
+	display: inline-block;
+	height: 100px;
+	margin: 1rem;
+	position: relative;
+	width: 100px;
+	text-align: center;
+}
+
+.card-3 {
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+</style>
+
+</head>
+
+
+
+
+<body>
+<div id="header">
+	<form action="search" method="post">{% csrf_token %}
+	<div id='search-box'>
+		<input type="text" id='search' name='search' placeholder="검색어를 입력하세요.">   
+		<button type="submit" id='search-icon'>
+			<img src="./static/image/search.png" style="width: 30px; height: 30px;">
+		</button>
+	</div>
+	
+	<br><br>
+	<input type='date' id='start_date' name='start_date'/>
+	~
+	<input type='date' id='end_date' name='end_date'/>
+	<br><br>
+	</form>
+</div>
+
+
+<div id='contents'>
+	<!-- 검색 -->
+	{% if travel %}
+	<div id='root-recommend'>
+		<h3>{{travel}}</h3>
+		<h3>루트추천</h3>
+	
+	{% else %}
+	
+		<h3>검색 결과가 없습니다.</h3>
+	
+	{% endif %}
+	
+	{% if root %}
+	{% for r in root %}
+		<div class="card card-3">
+		<a href="detail">{{r}}</a>
+		</div>
+	{% endfor %}
+					
+	</div>
+	{% endif %}
+	
+	<!-- 날씨 -->
+	{% if start != None and end != None %}
+	<div id='weather'>
+	<span>{{start}} ~ {{end}}</span>
+	<br>
+	<span> 날씨는? </span>
+	</div>
+	
+	{% else %}
+	<div id='weather'>
+	<h4>날짜를 선택하시면 날씨를 볼 수 있습니다.</h4>
+	</div>
+	{% endif %}
+	
+	<!-- 여행지 -->
+	{% if tour %}
+	<div id='tour-recommend'>
+	<h3>여행지 추천</h3>
+	{% for t in tour %}
+		<div class="card card-3">
+		<a href="detail">{{t}}</a>
+		</div>
+	{% endfor %}		
+	</div>
+	{% endif %}
+	
+	{% if restaurant %}
+	<div id='restaurant-recommend'>
+	<h3>음식점 추천</h3>
+	{% for r in restaurant %}
+		<div class="card card-3">
+		<a href="detail">{{r}}</a>
+		</div>
+	{% endfor %}		
+	</div>
+	{% endif %}	
+	
+</div>
+
+</body>
+</html>
