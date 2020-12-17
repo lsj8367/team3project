@@ -1,14 +1,9 @@
 from django.shortcuts import render
 from django.http.response import HttpResponseRedirect
-from pymongo import MongoClient
+from travel.utils import get_db_handle, get_collection_handle
 
-'''
-client = MongoClient('mongodb://localhost:27017/')
-print(client.list_database_names()) # 데이터 베이스 목록 조회
-
-db = client['데이터베이스 이름']
-conn = db['컬렉션이름']
-'''
+db_handle, mongo_client = get_db_handle('testdb', 'localhost', '27017')
+# testdb 는 데이터베이스명 주소 localhost 자기주소 27017이 기본 포트번호
 
 # Create your views here.
 def MainFunc(request):
@@ -28,6 +23,13 @@ def SearchFunction(request):
         print(start_date)
         print(end_date)
         
+        conn = get_collection_handle(db_handle, 'testdb') # 여기서 test_db는 collections이므로 table과 같음.
+        # 사용하려면  conn.find or insert delete update 가능
+        
+        #data = conn.find({'도시' : '충주'}) # 도시가 충주인것 찾음
+        data = conn.find_one() # 한개만 찾을때
+        print(data)
+        
         weather = 'rainy'
         root = ['루트1', '루트2', '루트3', '루트4', '루트5']
         tour = ['여행지1', '여행지2', '여행지3', '여행지4', '여행지5']
@@ -38,4 +40,5 @@ def SearchFunction(request):
         return render(request, 'main.html', context)
     
 def DetailFunction(request):
+    
     return render(request, 'datail.html')
