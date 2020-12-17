@@ -30,8 +30,6 @@ def SearchFunction(request):
         data = conn.find_one() # 한개만 찾을때
         print(data)
         
-
-        
         weather = 'rainy'
         root = ['루트1', '루트2', '루트3', '루트4', '루트5']
         tour = ['여행지1', '여행지2', '여행지3', '여행지4', '여행지5']
