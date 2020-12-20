@@ -2,9 +2,6 @@ from django.shortcuts import render
 from django.http.response import HttpResponseRedirect
 from travel.utils import get_db_handle, get_collection_handle
 
-db_handle, mongo_client = get_db_handle('testdb', 'localhost', '27017')
-# testdb 는 데이터베이스명 주소 localhost 자기주소 27017이 기본 포트번호
-
 # Create your views here.
 def MainFunc(request):
     return render(request, 'main.html')
