@@ -23,13 +23,6 @@ def SearchFunction(request):
         print(start_date)
         print(end_date)
         
-        conn = get_collection_handle(db_handle, 'testdb') # 여기서 test_db는 collections이므로 table과 같음.
-        # 사용하려면  conn.find or insert delete update 가능
-        
-        #data = conn.find({'도시' : '충주'}) # 도시가 충주인것 찾음
-        data = conn.find_one() # 한개만 찾을때
-        print(data)
-        
         weather = 'rainy'
         root = ['루트1', '루트2', '루트3', '루트4', '루트5']
         tour = ['여행지1', '여행지2', '여행지3', '여행지4', '여행지5']
