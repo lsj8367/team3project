@@ -1,7 +1,8 @@
 # team3project
 
-## github 사용방법
+
 <!-- 
+## github 사용방법
 레포지토리 안에 오른쪽위에 Fork를 클릭하여 링크를 딴다.
 이제는 자기 github 레포지토리로 이 프로젝트와 같은 이름이 생성된다.
 fork 한후 fork한 주소를 git clone (내 remote repository URL) 하여 .git을 자신의 폴더에 생성한다.
