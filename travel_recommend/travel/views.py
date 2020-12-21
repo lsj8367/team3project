@@ -12,13 +12,13 @@ def LoginFunc(request):
     #print(id)
     #print(pwd)
 
-    print('hi')
     if Tuser.objects.filter(user_id = id).exists() == True:
         tusers = Tuser.objects.filter(user_id = id)
     else:
         ss = '''
             <script> 
-            alert('아이디 또는 비밀번호가 일치하지 않습니다');
+                alert('아이디 또는 비밀번호가 일치하지 않습니다');
+                history.back();
             </script>
         '''
         return render(request, 'index.html', {'error' : ss})
