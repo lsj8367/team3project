@@ -108,6 +108,12 @@ div#restaurant-recommend{
 
 <body>
 <div id="header">
+	<div align="right">
+	<form action="logout">
+	<b style="color: purple;">{{ user_log }} 님 안녕하세요</b>
+	<button type="submit">로그아웃</button>
+	</form>
+	</div>
 	<form action="search" method="post">{% csrf_token %}
 	<div id='search-box'>
 		<input type="text" id='search' name='search' placeholder="검색어를 입력하세요.">   

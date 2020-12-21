@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>여행지 추천</title>
+</head>
+<script type="text/javascript">
+window.onload = function(){
+	document.getElementById("btnLogin").onclick = function(){
+		//alert('a');
+		loginCheck();
+	};
+	document.getElementById("btnCreate").onclick = function(){
+		//alert('b');
+		
+	};
+};
+
+function loginCheck(){
+	if(frm.id.value === ''){
+		alert('아이디 입력');
+		return;
+	}else if (frm.pwd.value == ''){
+		alert('패스워드 입력');
+		return;
+	}
+	frm.submit();
+};
+
+</script>
+<body>
+{% if error %}
+{{ error | safe }}
+{% endif %}
+<h2>여행지 추천 프로젝트</h2>
+<form action="login" method="post" name='frm'>{% csrf_token %}
+아이디 : <input type="text" id="id" name="id" placeholder="아이디"><br>
+패스워드 : <input type="password" id='pwd' name='pwd' placeholder="비밀번호"><br>
+</form>
+<input type="button" id="btnLogin" value="로그인">
+<input type="button" id="btnCreate" value="회원가입">
+</body>
+</html>
