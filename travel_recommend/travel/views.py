@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http.response import HttpResponseRedirect
-from travel.utils import get_db_handle, get_collection_handle
+from travel.models import Travel, Tuser, Treview
+# from travel.utils import get_db_handle, get_collection_handle
+ 
 
 # Create your views here.
 def MainFunc(request):
@@ -19,6 +21,21 @@ def SearchFunction(request):
         print(search)
         print(start_date)
         print(end_date)
+        
+        ###
+        ### 데이터 분석 받아오는곳
+        ###
+        
+        travel = Travel.objects.all()
+        
+        tuser = Tuser.objects.all()
+        
+        treview = Treview.objects.all()
+        
+        
+        
+        
+        
         
         weather = 'rainy'
         root = ['루트1', '루트2', '루트3', '루트4', '루트5']
