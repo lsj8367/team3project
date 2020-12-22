@@ -22,6 +22,10 @@ urlpatterns = [
     
     path('', views.MainFunc), 
     path('main', views.MainFunc), 
+    path('', views.IndexFunc, name='home'),
+    path('login', views.LoginFunc),
+    path('logout', views.LogoutFunc),
+    path('main', views.MainFunc, name='main'), 
     path('search', views.SearchFunction),
     path('detail', views.DetailFunction),
     path('signup', views.SignupFunction),
