@@ -21,6 +21,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     
     path('', views.MainFunc), 
+    path('main', views.MainFunc), 
     path('search', views.SearchFunction),
-    path('detail', views.DetailFunction)
+    path('detail', views.DetailFunction),
+    path('signup', views.SignupFunction),
+    path('signup2', views.SignupFunction2),
 ]
