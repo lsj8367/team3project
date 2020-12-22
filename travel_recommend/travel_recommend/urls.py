@@ -20,10 +20,14 @@ from travel import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     
+    path('', views.MainFunc), 
+    path('main', views.MainFunc), 
     path('', views.IndexFunc, name='home'),
     path('login', views.LoginFunc),
     path('logout', views.LogoutFunc),
     path('main', views.MainFunc, name='main'), 
     path('search', views.SearchFunction),
-    path('detail', views.DetailFunction)
+    path('detail', views.DetailFunction),
+    path('signup', views.SignupFunction),
+    path('signup2', views.SignupFunction2),
 ]
