@@ -113,6 +113,6 @@ def SignupFunction2(request):
         print(travel1, travel2, travel3)
         print(rating1, rating2, rating3)
         
-        return render(request, 'main.html')
+        return redirect('home')
     return render(request, 'datail.html')
 
