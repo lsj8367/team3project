@@ -20,8 +20,6 @@ from travel import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    #path('', views.MainFunc), 
-    #path('main', views.MainFunc), 
     path('', views.IndexFunc, name='home'),
     path('login', views.LoginFunc),
     path('logout', views.LogoutFunc),
