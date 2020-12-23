@@ -12,8 +12,6 @@ def IndexFunc(request):
 def LoginFunc(request):
     id = request.POST.get('id')
     pwd = request.POST.get('pwd')
-    #print(id)
-    #print(pwd)
 
     if Tuser.objects.filter(user_id = id).exists() == True:
         tusers = Tuser.objects.filter(user_id = id)
@@ -75,7 +73,7 @@ def SearchFunction(request):
         
         travel = Travel.objects.all()
         tuser = Tuser.objects.all()
-        treview = Treview.objects.all()  
+        treview = Treview.objects.all()
         
         weather = 'rainy'
 
@@ -86,8 +84,8 @@ def SearchFunction(request):
         
         context={'travel':search, 'start':start_date, 'end':end_date, 'weather':weather, 'root':root, 'tour':tour, 'restaurant':restaurant}
         #return render(request, 'main.html', context)
-        return render(request, 'main.html', context)
-        return HttpResponseRedirect(reverse(''))
+        #return render(request, 'main.html', context)
+        return HttpResponseRedirect(reverse('main'))
     
     
 def DetailFunction(request):
