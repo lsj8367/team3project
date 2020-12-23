@@ -25,7 +25,7 @@ def LoginFunc(request):
         return render(request, 'index.html', {'error' : ss})
     
     for user in tusers:
-        print(user.user_pwd)
+        #print(user.user_pwd)
         if user.user_pwd != pwd:
             return render(request, 'index.html')
         
@@ -33,7 +33,7 @@ def LoginFunc(request):
         return redirect('main') # urls에 name값 할당
         
 def LogoutFunc(request):
-    print(request.session.get('user'))
+    #print(request.session.get('user'))
     if request.session.get('user'):
         del(request.session['user'])
     #print(request.session.get('user')) # 세션 삭제된것 확인
@@ -41,7 +41,7 @@ def LogoutFunc(request):
 
 def MainFunc(request):
     user_log = request.session.get('user')
-    print(user_log) # 세션 값 = 사용자 이름
+    #print(user_log) # 세션 값 = 사용자 이름
     
     return render(request, 'main.html', {'user_log' : user_log})
 
@@ -51,7 +51,7 @@ def SearchFunction(request):
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
         user_log = request.session.get('user')
-        print(user_log) # 세션 값 = 사용자 이름
+        #print(user_log) # 세션 값 = 사용자 이름
         #print(search)
 
         if start_date == '':
@@ -115,11 +115,9 @@ def SearchFunction(request):
         treview = Treview.objects.all()
         
 
-        root = ['루트1', '루트2', '루트3', '루트4', '루트5']
         tour = ['여행지1', '여행지2', '여행지3', '여행지4', '여행지5']
         
-        context={'travel':search, 'start':start_date, 'end':end_date, 'weather': wlist, 'root':root, 'tour':tour, \
-                  'user_log' : user_log}
+        context={'travel':search, 'start':start_date, 'end':end_date, 'weather': wlist, 'tour':tour, 'user_log' : user_log}
         return render(request, 'main.html', context)
     
     
