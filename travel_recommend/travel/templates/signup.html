@@ -3,6 +3,70 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"
+	type="text/javascript"></script>
+<script type="text/javascript">
+window.onload = function(){
+	document.getElementById("close").onclick = function(){
+		$("#myModal3").hide();
+	};
+	document.getElementById("ok").onclick = function(){
+		$("#myModal3").hide();
+	};
+	
+	document.getElementById("signup").onclick = function(){
+		//alert('a');
+		var bool = valueCheck();
+		
+		if(bool){
+			frm.submit();
+		}
+	};
+	
+};
+
+function valueCheck(){
+	if(frm.ID.value === ''){
+		$("#myModal3").show();
+		return false;
+	}else if (frm.password.value == ''){
+		$("#myModal3").show();
+		return false;
+	}else if (frm.travel1.value == ''){
+		$("#myModal3").show();
+		return false;
+	}else if (frm.rating1.value == ''){
+		$("#myModal3").show();
+		return false;
+	}else if (frm.travel2.value == ''){
+		$("#myModal3").show();
+		return false;
+	}else if (frm.rating2.value == ''){
+		$("#myModal3").show();
+		return false;
+	}else if (frm.travel3.value == ''){
+		$("#myModal3").show();
+		return false;
+	}else if (frm.rating3.value == ''){
+		$("#myModal3").show();
+		return false;
+	}
+	else{
+		return true;
+	}	
+};
+
+
+</script>
+<meta name="viewport" content="width=device-width">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel='stylesheet'
+	href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'>
+
+
+
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -186,18 +250,49 @@ button:active {
 .dropdown-content a:hover {background-color: #ddd;}
 
 .dropdown:hover .dropdown-content {display: block;}
+
+
+
+.container {
+	padding-bottom: 140px;
+}
+
+.popover-example {
+	margin: 0 0 10px;
+	list-style: none;
+}
+
+.popover-example li {
+	display: inline-block;
+	margin: 4px;
+	padding: 0px;
+}
+
+.btn:focus {
+	outline: none;
+}
+
+.modExample .btn {
+	margin: 4px 8px 4px 0;
+}
 </style>
+
+
+
+
+
+
 </head>
 <body>
-
-
-
+{% if error %}
+{{error | safe }}
+{% endif %}
 <div class="page-container">   
-<form action="signup2" method="POST">{% csrf_token %}
+<form action="signup2" method="POST" name='frm' id="frm">{% csrf_token %}
 <h1>회원가입</h1>
-<input type="text" name="name" id="name" class="Name" placeholder="Name">
-<input type="text" name="ID" id="ID" class="Email" placeholder="ID">
-<input type="password" name="password" name="password" class="Address" placeholder="password">
+<input type="text" name="name" id="name" class="Name" placeholder="Name" onKeyup="this.value=this.value.replace(/[a-z0-9]/gi,'');">
+<input type="text" name="ID" id="ID" class="Email" placeholder="ID" onKeyup="this.value=this.value.replace(/[^a-z0-9]/gi,'');">
+<input type="password" name="password" name="password" class="Address" placeholder="password" onKeyup="this.value=this.value.replace(/[^a-z0-9]/gi,'');">
 
 <input type="text" name="travel1" id="travel1" class="travel" placeholder="여행지1">
 <input type="number" name="rating1" id="rating1" class="travel" placeholder="평가점수" max="5" min="0">
@@ -206,9 +301,39 @@ button:active {
 <input type="text" name="travel3" id="travel3" class="travel" placeholder="여행지3">
 <input type="number" name="rating3" id="rating3" class="travel" placeholder="평가점수" max="5" min="0">
 
-<button type="submit" value="Add" name="submit">회원가입</button>
+<button type="button"  id="signup" name="signup" >회원가입</button>
 <button type="button" onclick="location.href='main'">메인화면</button>
 </form>
 </div>
+<div class="container" id="container">
+
+	<!-- modal examples -->
+<div class="modExample" style="color: black; font-size: 20px;">
+
+	<div id="myModal3" class="modal" data-easein="flipYIn" tabindex="-1"
+		role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header" style="display: inline-block;">
+					<button type="button" id="close" class="close" data-dismiss="modal"
+						aria-hidden="true" style="text-align: right; width: 30px; height: 30px; background-color: #ef4300;"  >X</button>
+					<h4 class="modal-title" style="text-align: left; align-items: left;">Error</h4>
+				</div>
+				<div class="modal-body">
+					<p>입력란을 모두 채워주세요.</p>
+				</div>
+				<div class="modal-footer">
+					<button id="ok" class="btn btn-default" data-dismiss="modal"
+						aria-hidden="true" style="width: 100px; height: 50px; font-size: 20px;">OK</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
+<script
+	src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
+
 </body>
 </html>
