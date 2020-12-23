@@ -153,25 +153,27 @@ div#tour-recommend{
 		{% for r in root %}
 			<div class="card card-3">
 			<a href="detail">{{r}}</a>
-			<p>{{weather}}</p>
+			<!--  <p>{{weather}}</p>-->
 			</div>
 		{% endfor %}			
 	{% endif %}
 	</div>
 	
 	<!-- 날씨 -->
-	<!--  
+	  
 	<div id='weather'>
-	{% if start != None and end != None %}
-		<span>{{start}} ~ {{end}}</span>
-		<br>
-		<span> 날씨는? </span>
+	{% if weather %}
 		
+		<span><b style="color: blue;">{{start}} ~ {{end}} 날씨  →</b> 
+		{% for w in weather %}
+			<b style="color: red;">{{w}} </b>/ 
+		{% endfor %}
+		</span>
 	{% else %}
-		<h4>날짜를 선택하시면 날씨를 볼 수 있습니다.</h4>
+		<h4>날씨가 없습니다.</h4>
 	{% endif %}
 	</div>
-	-->
+	
 	
 	<!-- 여행지 -->
 	<div id='tour-recommend'>
