@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.http.response import HttpResponseRedirect
-
 from django.urls import reverse
-
 from travel.models import Travel, Tuser, Treview
 # from travel.utils import get_db_handle, get_collection_handle
- 
+import os
+import pandas as pd
+from travel.weather import Weather
 def IndexFunc(request):
     return render(request, 'index.html')
 
@@ -45,7 +45,6 @@ def MainFunc(request):
     user_log = request.session.get('user')
     print(user_log) # 세션 값 = 사용자 이름
     
-    
     return render(request, 'main.html', {'user_log' : user_log})
 
 def SearchFunction(request):
@@ -53,6 +52,8 @@ def SearchFunction(request):
         search = request.POST.get('search')
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
+        user_log = request.session.get('user')
+        print(user_log) # 세션 값 = 사용자 이름
         weather = 'rainy'
 
         if start_date == '':
@@ -61,10 +62,21 @@ def SearchFunction(request):
         if end_date == '':
             end_date = None
             weather = ''    
+        try:
+            weather = Weather(search)
+            print(weather.head(5))
+            query = (weather['date'] >= start_date) & (weather['date'] <= end_date)
+            print(weather.loc[query]['weather'].values)
+            for i in range(len(weather.loc[query]['weather'].values)):
+                print(weather.loc[query]['weather'].values[i])
+                
+        except: 
+            print('===날짜가 없을경우===')
+            print(start_date)
+            print(end_date)
+            
         
         print(search)
-        print(start_date)
-        print(end_date)
         
 
         ###
@@ -82,10 +94,11 @@ def SearchFunction(request):
         restaurant = ['음식점1', '음식점2', '음식점3', '음식점4', '음식점5']
         
         
-        context={'travel':search, 'start':start_date, 'end':end_date, 'weather':weather, 'root':root, 'tour':tour, 'restaurant':restaurant}
+        context={'travel':search, 'start':start_date, 'end':end_date, 'weather':weather, 'root':root, 'tour':tour, 'restaurant':restaurant,\
+                  'user_log' : user_log}
         #return render(request, 'main.html', context)
-        #return render(request, 'main.html', context)
-        return HttpResponseRedirect(reverse('main'))
+        return render(request, 'main.html', context)
+        #return HttpResponseRedirect(reverse('main'))
     
     
 def DetailFunction(request):
