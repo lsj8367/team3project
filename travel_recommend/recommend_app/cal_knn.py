@@ -11,10 +11,10 @@ path = os.getcwd()
 print(path)
 
 filepath = path + '\travel_recommend\travel\static\datafile\placerating.csv'
-results =[]
 #user_id = 1
 
 def Cal_Knn(filepath, user_id):
+    results =[]
     # 1. raw dataset
     rating = pd.read_csv(filepath)
     rating.head()   #   critic(user)   title(item)   rating
@@ -70,3 +70,4 @@ def Cal_Knn(filepath, user_id):
     result.to_csv()
     #print(result)
     results.append(result)
+    return results

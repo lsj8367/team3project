@@ -9,7 +9,6 @@ from travel.cosine_sim import cosinePlace
 import json
 import numpy as np
 import recommend_app
-from recommend_app.cal_knn import results
 import pandas as pd
 import os
 config = {
@@ -136,17 +135,17 @@ def SearchFunction(request):
         path = os.getcwd()
         print(path)
         filepath = path+'/travel_recommend/travel/static/datafile/placerating.csv'
-        abc = recommend_app.cal_knn.Cal_Knn(filepath, user_id)
-        #print(results)
-        tlist = abc['iid'].values.tolist()
+        results = recommend_app.cal_knn.Cal_Knn(filepath, user_id)
+        print(results[0]['iid'].values)
+        
+        tlist = results[0]['iid'].values
         
         travel = Travel.objects.all()
         treview = Treview.objects.all()
         
         flist = []
         for f in tlist :
-            
-            filepath = '/travel_recommend/travel/static/datafile/국내여행지.xlsx' 
+            filepath = path + '/travel_recommend/travel/static/datafile/국내여행지.xlsx' 
             df = pd.read_excel(filepath)   
             tour = df[df['placeId']== f]['검색지명']
             #tour = Travel.objects.filter(placeId = f)
