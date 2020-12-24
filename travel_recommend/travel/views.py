@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from travel.models import Travel, Tuser, Treview
 import MySQLdb
 from django.db.models import Max
 from travel.weather import Weather
+from travel.cosine_sim import cosinePlace
+import json
+import numpy as np
 config = {
     'host':'127.0.0.1',
     'user':'root',
@@ -131,6 +134,18 @@ def SearchFunction(request):
         
         context={'travel':search, 'start':start_date, 'end':end_date, 'weather': wlist, 'tour':tour, 'user_log' : user_log}
         return render(request, 'main.html', context)
+
+def CossimFunc(request):
+    msg = request.GET['msg']
+    way = request.GET['way']
+    print(msg)
+    df = cosinePlace(msg,way)
+    print(len(df), df.iloc[0].title)
+    datas = []
+    for s in range(len(df)):
+        dic = {'title':df.iloc[s].title, 'area':df.iloc[s].area, 'genre':df.iloc[s].genre, 'weighted_vote':np.round(df.iloc[s].weighted_vote,3)}
+        datas.append(dic)
+    return HttpResponse(json.dumps(datas), content_type = "application/json")
     
     
 def DetailFunction(request):

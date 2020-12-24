@@ -93,7 +93,413 @@ div#tour-recommend{
 .card-3 {
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
+
+table{
+	text-align: center; 
+	padding-left: 20px;
+}
+
+tr, th, td {
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+tr:hover {background-color: #f5f5f5;}
+
+a:link {
+  text-decoration: none;
+  color:black;
+}
+
+a:visited {
+  text-decoration: none;
+  color:gray;
+}
+
+a:hover {
+  text-decoration: none;
+  color:gray;
+}
+
+a:active {
+  text-decoration: underline;
+  color:blue;
+}
 </style>
+<script src = "https://code.jquery.com/jquery-latest.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+<script type="text/javascript">
+$(document).ready(function(){
+	//alert('a');
+	
+	$("#btn1").click(function(){
+		var msg = $("#txtArea1").val();
+		//alert(msg);
+		$("#showData1").empty();
+		
+		$.ajax({
+			url:'startajax',
+			type:'get',
+			data:{'msg': msg,'way':'genre'},
+			dataType:'json',
+			success:function(data){
+				//alert(data);
+				var str = "<table border = '1'>";
+				str += "<tr><th>관광지명</th><th>지역명</th><th>분야</th><th>가중평점평균</th></tr>";
+
+				
+				$.each(data, function(ind, entry){
+					str += "<tr>";
+					str += "<td><a href='https://www.google.com/search?q=" + entry['title']+ "'" + "target='_blank'>" + entry['title'] + "</td>";
+					str += "<td>" + entry['area'] + "</td>";
+					str += "<td>" + entry['genre'] + "</td>";
+					str += "<td>" + entry['weighted_vote'] + "</td>";
+					str += "</tr>";
+				});
+				
+				str +="</table>";
+				$("#showData1").append(str);
+				
+				
+			},
+			error:function(){
+				$("#showData1").html('<h6>에러</h6>');
+			}
+		});
+		
+	});
+	
+	$("#btn_1").click(function(){
+		var msg = $("#txtArea1").val();
+		//alert(msg);
+		$("#showData1").empty();
+		
+		$.ajax({
+			url:'startajax',
+			type:'get',
+			data:{'msg': msg,'way':'area'},
+			dataType:'json',
+			success:function(data){
+				//alert(data);
+				var str = "<table border = '1'>";
+				str += "<tr><th>관광지명</th><th>지역명</th><th>분야</th><th>가중평점평균</th></tr>";
+				
+				$.each(data, function(ind, entry){
+					str += "<tr>";
+					
+					str += "<td><a href='https://www.google.com/search?q=" +entry['title']+ "'" + "target='_blank'>" + entry['title'] + "</a></td>";
+					str += "<td>" + entry['area'] + "</td>";
+					str += "<td>" + entry['genre'] + "</td>";
+					str += "<td>" + entry['weighted_vote'] + "</td>";
+					str += "</tr>";
+				});
+				
+				str +="</table>";
+				$("#showData1").append(str);
+				
+				
+			},
+			error:function(){
+				$("#showData1").html('<h6>에러</h6>');
+			}
+		});
+		
+	});
+	
+	$("#btn2").click(function(){
+		var msg = $("#txtArea2").val();
+		//alert(msg);
+		$("#showData2").empty();
+		
+		$.ajax({
+			url:'startajax',
+			type:'get',
+			data:{'msg': msg,'way':'genre'},
+			dataType:'json',
+			success:function(data){
+				//alert(data);
+				var str = "<table border = '1'>";
+				str += "<tr><th>관광지명</th><th>지역명</th><th>분야</th><th>가중평점평균</th></tr>";
+				
+				$.each(data, function(ind, entry){
+					str += "<tr>";
+					str += "<td><a href='https://www.google.com/search?q=" + entry['title']+ "'" + "target='_blank'>" + entry['title'] + "</td>";
+					str += "<td>" + entry['area'] + "</td>";
+					str += "<td>" + entry['genre'] + "</td>";
+					str += "<td>" + entry['weighted_vote'] + "</td>";
+					str += "</tr>";
+				});
+				
+				str +="</table>";
+				$("#showData2").append(str);
+				
+				
+			},
+			error:function(){
+				$("#showData2").html('<h6>에러</h6>');
+			}
+		});
+		
+	});
+	
+	$("#btn_2").click(function(){
+		var msg = $("#txtArea2").val();
+		//alert(msg);
+		$("#showData2").empty();
+		
+		$.ajax({
+			url:'startajax',
+			type:'get',
+			data:{'msg': msg,'way':'area'},
+			dataType:'json',
+			success:function(data){
+				//alert(data);
+				var str = "<table border = '1'>";
+				str += "<tr><th>관광지명</th><th>지역명</th><th>분야</th><th>가중평점평균</th></tr>";
+				
+				$.each(data, function(ind, entry){
+					str += "<tr>";
+					
+					str += "<td><a href='https://www.google.com/search?q=" +entry['title']+ "'" + "target='_blank'>" + entry['title'] + "</a></td>";
+					str += "<td>" + entry['area'] + "</td>";
+					str += "<td>" + entry['genre'] + "</td>";
+					str += "<td>" + entry['weighted_vote'] + "</td>";
+					str += "</tr>";
+				});
+				
+				str +="</table>";
+				$("#showData2").append(str);
+				
+				
+			},
+			error:function(){
+				$("#showData2").html('<h6>에러</h6>');
+			}
+		});
+		
+	});
+	
+	$("#btn3").click(function(){
+		var msg = $("#txtArea3").val();
+		//alert(msg);
+		$("#showData3").empty();
+		
+		$.ajax({
+			url:'startajax',
+			type:'get',
+			data:{'msg': msg,'way':'genre'},
+			dataType:'json',
+			success:function(data){
+				//alert(data);
+				var str = "<table border = '1'>";
+				str += "<tr><th>관광지명</th><th>지역명</th><th>분야</th><th>가중평점평균</th></tr>";
+				
+				$.each(data, function(ind, entry){
+					str += "<tr>";
+					str += "<td><a href='https://www.google.com/search?q=" + entry['title']+ "'" + "target='_blank'>" + entry['title'] + "</td>";
+					str += "<td>" + entry['area'] + "</td>";
+					str += "<td>" + entry['genre'] + "</td>";
+					str += "<td>" + entry['weighted_vote'] + "</td>";
+					str += "</tr>";
+				});
+				
+				str +="</table>";
+				$("#showData3").append(str);
+				
+				
+			},
+			error:function(){
+				$("#showData3").html('<h6>에러</h6>');
+			}
+		});
+		
+	});
+	
+	$("#btn_3").click(function(){
+		var msg = $("#txtArea3").val();
+		//alert(msg);
+		$("#showData3").empty();
+		
+		$.ajax({
+			url:'startajax',
+			type:'get',
+			data:{'msg': msg,'way':'area'},
+			dataType:'json',
+			success:function(data){
+				//alert(data);
+				var str = "<table border = '1'>";
+				str += "<tr><th>관광지명</th><th>지역명</th><th>분야</th><th>가중평점평균</th></tr>";
+				
+				$.each(data, function(ind, entry){
+					str += "<tr>";
+					
+					str += "<td><a href='https://www.google.com/search?q=" +entry['title']+ "'" + "target='_blank'>" + entry['title'] + "</a></td>";
+					str += "<td>" + entry['area'] + "</td>";
+					str += "<td>" + entry['genre'] + "</td>";
+					str += "<td>" + entry['weighted_vote'] + "</td>";
+					str += "</tr>";
+				});
+				
+				str +="</table>";
+				$("#showData3").append(str);
+				
+				
+			},
+			error:function(){
+				$("#showData3").html('<h6>에러</h6>');
+			}
+		});
+		
+	});
+	
+	$("#btn4").click(function(){
+		var msg = $("#txtArea4").val();
+		//alert(msg);
+		$("#showData4").empty();
+		
+		$.ajax({
+			url:'startajax',
+			type:'get',
+			data:{'msg': msg,'way':'genre'},
+			dataType:'json',
+			success:function(data){
+				//alert(data);
+				var str = "<table border = '1'>";
+				str += "<tr><th>관광지명</th><th>지역명</th><th>분야</th><th>가중평점평균</th></tr>";
+				
+				$.each(data, function(ind, entry){
+					str += "<tr>";
+					str += "<td><a href='https://www.google.com/search?q=" + entry['title']+ "'" + "target='_blank'>" + entry['title'] + "</td>";
+					str += "<td>" + entry['area'] + "</td>";
+					str += "<td>" + entry['genre'] + "</td>";
+					str += "<td>" + entry['weighted_vote'] + "</td>";
+					str += "</tr>";
+				});
+				
+				str +="</table>";
+				$("#showData4").append(str);
+				
+				
+			},
+			error:function(){
+				$("#showData4").html('<h6>에러</h6>');
+			}
+		});
+		
+	});
+	
+	$("#btn_4").click(function(){
+		var msg = $("#txtArea4").val();
+		//alert(msg);
+		$("#showData4").empty();
+		
+		$.ajax({
+			url:'startajax',
+			type:'get',
+			data:{'msg': msg,'way':'area'},
+			dataType:'json',
+			success:function(data){
+				//alert(data);
+				var str = "<table border = '1'>";
+				str += "<tr><th>관광지명</th><th>지역명</th><th>분야</th><th>가중평점평균</th></tr>";
+				
+				$.each(data, function(ind, entry){
+					str += "<tr>";
+					
+					str += "<td><a href='https://www.google.com/search?q=" +entry['title']+ "'" + "target='_blank'>" + entry['title'] + "</a></td>";
+					str += "<td>" + entry['area'] + "</td>";
+					str += "<td>" + entry['genre'] + "</td>";
+					str += "<td>" + entry['weighted_vote'] + "</td>";
+					str += "</tr>";
+					count += 1;
+				});
+				
+				str +="</table>";
+				$("#showData4").append(str);
+				
+				
+			},
+			error:function(){
+				$("#showData4").html('<h6>에러</h6>');
+			}
+		});
+		
+	});
+	
+	$("#btn5").click(function(){
+		var msg = $("#txtArea5").val();
+		//alert(msg);
+		$("#showData5").empty();
+		
+		$.ajax({
+			url:'startajax',
+			type:'get',
+			data:{'msg': msg,'way':'genre'},
+			dataType:'json',
+			success:function(data){
+				//alert(data);
+				var str = "<table border = '1'>";
+				str += "<tr><th>관광지명</th><th>지역명</th><th>분야</th><th>가중평점평균</th></tr>";
+				
+				$.each(data, function(ind, entry){
+					str += "<tr>";
+					str += "<td><a href='https://www.google.com/search?q=" + entry['title']+ "'" + "target='_blank'>" + entry['title'] + "</td>";
+					str += "<td>" + entry['area'] + "</td>";
+					str += "<td>" + entry['genre'] + "</td>";
+					str += "<td>" + entry['weighted_vote'] + "</td>";
+					str += "</tr>";
+				});
+				
+				str +="</table>";
+				$("#showData5").append(str);
+				
+				
+			},
+			error:function(){
+				$("#showData5").html('<h6>에러</h6>');
+			}
+		});
+		
+	});
+	
+	$("#btn_5").click(function(){
+		var msg = $("#txtArea5").val();
+		//alert(msg);
+		$("#showData5").empty();
+		
+		$.ajax({
+			url:'startajax',
+			type:'get',
+			data:{'msg': msg,'way':'area'},
+			dataType:'json',
+			success:function(data){
+				//alert(data);
+				var str = "<table border = '1'>";
+				str += "<tr><th>관광지명</th><th>지역명</th><th>분야</th><th>가중평점평균</th></tr>";
+				
+				$.each(data, function(ind, entry){
+					str += "<tr>";
+					
+					str += "<td><a href='https://www.google.com/search?q=" +entry['title']+ "'" + "target='_blank'>" + entry['title'] + "</a></td>";
+					str += "<td>" + entry['area'] + "</td>";
+					str += "<td>" + entry['genre'] + "</td>";
+					str += "<td>" + entry['weighted_vote'] + "</td>";
+					str += "</tr>";
+				});
+				
+				str +="</table>";
+				$("#showData5").append(str);
+				
+				
+			},
+			error:function(){
+				$("#showData5").html('<h6>에러</h6>');
+			}
+		});
+		
+	});
+});
+</script>
 
 </head>
 
@@ -154,7 +560,11 @@ div#tour-recommend{
 		{% for t in tour %}
 			<div class="card card-3">
 			<a href="detail?tour={{t}}">{{t}}</a>
+			<input type = 'hidden' id = 'txtArea{{forloop.counter}}' value = '{{t}}'/>
+			<button type = 'button' class="btn btn-outline-secondary" id = 'btn{{forloop.counter}}'>장르기반</button>
+			<button type = 'button' class="btn btn-outline-secondary"  id = 'btn_{{forloop.counter}}'>장소기반</button>
 			</div>
+			<div id = 'showData{{forloop.counter}}'  style = 'text-align: left; padding-left: 20px;'></div>
 		{% endfor %}
 	{% else %}
 		<h3>검색 결과가 없습니다.</h3>
