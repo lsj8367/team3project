@@ -10,6 +10,7 @@ import json
 import numpy as np
 import recommend_app
 from recommend_app.cal_knn import results
+import os
 
 config = {
     'host':'127.0.0.1',
@@ -22,7 +23,6 @@ config = {
 }
 conn = MySQLdb.connect(**config)
 
-conn = MySQLdb.connect(**config)
 # Create your views here.
 
 def IndexFunc(request):
@@ -70,6 +70,7 @@ def SearchFunction(request):
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
         user_log = request.session.get('user')
+        
         #print(user_log) # 세션 값 = 사용자 이름
         #print(search)
 
@@ -128,14 +129,20 @@ def SearchFunction(request):
         ###
         ### 데이터 분석 받아오는곳
         ###
+        tuser = Tuser.objects.filter(user_name = user_log)
+        for t in tuser:
+            userid = t.user_id
         
-        filepath = '../travel/static/datafile/placerating.csv'
-        recommend_app.cal_knn.Cal_Knn(filepath, request)
-        print(results)
+        path = os.getcwd()
+        print(path)
+        
+        filepath = path + '/travel_recommend/travel/static/datafile/placerating.csv'
+        recommend_app.cal_knn.Cal_Knn(filepath, userid)
+        print(results[0]['iid'].values) # 리스트 추천여행지 확인
         
         travel = Travel.objects.all()
-        tuser = Tuser.objects.all()
         treview = Treview.objects.all()
+        
         
 
         tour = ['여행지1', '여행지2', '여행지3', '여행지4', '여행지5']
