@@ -122,6 +122,10 @@ def SearchFunction(request):
     
     
 def DetailFunction(request):
+    t = request.GET['tour']
+    print(t)
+    
+    
     return render(request, 'detail2.html')
 
 def SignupFunction(request):

@@ -153,7 +153,7 @@ div#tour-recommend{
 		<h3>여행지 추천</h3>
 		{% for t in tour %}
 			<div class="card card-3">
-			<a href="detail">{{t}}</a>
+			<a href="detail?tour={{t}}">{{t}}</a>
 			</div>
 		{% endfor %}
 	{% else %}
