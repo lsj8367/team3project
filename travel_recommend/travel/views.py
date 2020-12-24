@@ -1,13 +1,13 @@
 from django.shortcuts import render, redirect
 from django.http.response import HttpResponseRedirect
 from django.urls import reverse
-
 from travel.models import Travel, Tuser, Treview
-# from travel.utils import get_db_handle, get_collection_handle
-
-########### 수정
 import MySQLdb
 from django.db.models import Max
+from travel.weather import Weather
+conn = MySQLdb.connect(**config)
+########### 수정
+
 config = {
     'host':'127.0.0.1',
     'user':'root',
@@ -17,9 +17,8 @@ config = {
     'charset':'utf8',
     'use_unicode':True
 }
-conn = MySQLdb.connect(**config)
-##################
 
+# Create your views here.
 
 def IndexFunc(request):
     return render(request, 'index.html')
@@ -27,8 +26,6 @@ def IndexFunc(request):
 def LoginFunc(request):
     id = request.POST.get('id')
     pwd = request.POST.get('pwd')
-    #print(id)
-    #print(pwd)
 
     if Tuser.objects.filter(user_id = id).exists() == True:
         tusers = Tuser.objects.filter(user_id = id)
@@ -42,7 +39,7 @@ def LoginFunc(request):
         return render(request, 'index.html', {'error' : ss})
     
     for user in tusers:
-        print(user.user_pwd)
+        #print(user.user_pwd)
         if user.user_pwd != pwd:
             return render(request, 'index.html')
         
@@ -50,18 +47,15 @@ def LoginFunc(request):
         return redirect('main') # urls에 name값 할당
         
 def LogoutFunc(request):
-    print(request.session.get('user'))
+    #print(request.session.get('user'))
     if request.session.get('user'):
         del(request.session['user'])
     #print(request.session.get('user')) # 세션 삭제된것 확인
     return redirect('home')
 
-
-# Create your views here.
 def MainFunc(request):
     user_log = request.session.get('user')
-    print(user_log) # 세션 값 = 사용자 이름
-    
+    #print(user_log) # 세션 값 = 사용자 이름
     
     return render(request, 'main.html', {'user_log' : user_log})
 
@@ -70,19 +64,61 @@ def SearchFunction(request):
         search = request.POST.get('search')
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
-        weather = 'rainy'
+        user_log = request.session.get('user')
+        #print(user_log) # 세션 값 = 사용자 이름
+        #print(search)
 
         if start_date == '':
             start_date = None
             weather = ''
         if end_date == '':
             end_date = None
-            weather = ''    
-        
-        print(search)
-        print(start_date)
-        print(end_date)
-        
+            weather = ''
+            
+        wlist = []
+        # 날씨 출력    
+        try:
+            weather = Weather(search)
+            
+            query = (weather['date'] >= start_date) & (weather['date'] <= end_date)
+            
+            for i in range(len(weather.loc[query]['weather'].values)):
+                
+                w = weather.loc[query]['weather'].values[i]
+                if (w >= 1 and w <= 3) or (w >= 33 and w <= 35):
+                    w = '맑음'
+                elif (w >= 4 and w <= 5) or (w >= 36 and w <= 37):
+                    w = '구름 조금'
+                elif (w >= 6 and w <= 8) or (w == 38):
+                    w = '흐림'
+                elif (w == 11):
+                    w = '안개'
+                elif (w == 12 or w == 13):
+                    w = '소나기'
+                elif (w >= 14 and w <= 17) or (w == 39):
+                    if (w == 15 or w == 16) or (w == 41 or w == 42):
+                        w = '천둥번개와 비'
+                    w = '한때 비'
+                elif w == 18 and w <= 40:
+                    if (w >= 19 and w <= 21) or (w == 32):
+                        w = '강풍'
+                    elif(w == 23 or w == 24) or (w == 29) or (w == 43 or w == 44):
+                        w = '눈'
+                    elif(w == 25):
+                        w = '진눈깨비'
+                    elif(w == 26):
+                        w = '얼어붙은 비'
+                    w = '비'
+                elif w == 30:
+                    w = '뜨거움 - 주의'
+                elif w == 31:
+                    w = '추움 - 주의'
+                wlist.append(w)
+            print(wlist)   
+        except: 
+            print('===날짜가 없을경우===')
+            print(start_date)
+            print(end_date)
 
         ###
         ### 데이터 분석 받아오는곳
@@ -90,26 +126,19 @@ def SearchFunction(request):
         
         travel = Travel.objects.all()
         tuser = Tuser.objects.all()
-        treview = Treview.objects.all()  
+        treview = Treview.objects.all()
         
-        weather = 'rainy'
 
-        root = ['루트1', '루트2', '루트3', '루트4', '루트5']
         tour = ['여행지1', '여행지2', '여행지3', '여행지4', '여행지5']
-        restaurant = ['음식점1', '음식점2', '음식점3', '음식점4', '음식점5']
         
-        
-        context={'travel':search, 'start':start_date, 'end':end_date, 'weather':weather, 'root':root, 'tour':tour, 'restaurant':restaurant}
-        #return render(request, 'main.html', context)
+        context={'travel':search, 'start':start_date, 'end':end_date, 'weather': wlist, 'tour':tour, 'user_log' : user_log}
         return render(request, 'main.html', context)
-        return HttpResponseRedirect(reverse(''))
     
     
 def DetailFunction(request):
     return render(request, 'detail2.html')
 
 def SignupFunction(request):
-    
     return render(request, 'signup.html')
 
 ######## 수정 
@@ -128,7 +157,7 @@ def SignupFunction2(request):
         rating3 = request.POST.get('rating3')        
         
         
-        
+
         #유저등록
         if Tuser.objects.filter(user_id = ID).exists() == False:
             Tuser(
@@ -136,10 +165,7 @@ def SignupFunction2(request):
                 user_name = name,
                 user_pwd = password
             ).save()
-#             sql = "insert into tuser values('{}', '{}', '{}')".format(ID, name, password)
-#             cursor = conn.cursor()
-#             cursor.execute(sql)
-#             conn.commit()
+
         else:
             ss = """
             <script> 
@@ -148,9 +174,7 @@ def SignupFunction2(request):
             </script>
             """
             return render(request, 'signup.html', {'error' : ss})
-        
-        
-        
+             
         #리뷰등록
         try:
             
@@ -187,4 +211,3 @@ def InsertReview(ID, travel, rating):
     cursor = conn.cursor()
     cursor.execute(sql)
     conn.commit()
-######## 수정 
