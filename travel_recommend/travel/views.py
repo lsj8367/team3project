@@ -5,7 +5,6 @@ from travel.models import Travel, Tuser, Treview
 import MySQLdb
 from django.db.models import Max
 from travel.weather import Weather
-conn = MySQLdb.connect(**config)
 ########### 수정
 
 config = {
@@ -18,6 +17,7 @@ config = {
     'use_unicode':True
 }
 
+conn = MySQLdb.connect(**config)
 # Create your views here.
 
 def IndexFunc(request):
@@ -131,15 +131,25 @@ def SearchFunction(request):
 
         tour = ['여행지1', '여행지2', '여행지3', '여행지4', '여행지5']
         
-        context={'travel':search, 'start':start_date, 'end':end_date, 'weather': wlist, 'tour':tour, 'user_log' : user_log}
+        context={'travel':search, 'start':start_date, 'end':end_date, 'weather': wlist, 'tour':travel, 'user_log' : user_log}
         return render(request, 'main.html', context)
     
-    
+###### 수정 20201224
 def DetailFunction(request):
-    return render(request, 'detail2.html')
+    travel_id = request.GET.get('travel_id')
+    travel = Travel.objects.get(tourid = travel_id)
+    
+    travels =  Travel.objects.filter(city = travel.city)|Travel.objects.filter(town = travel.town)
+    # select * from travel where city = ? or town =? limit 5;
+    travels = travels[:5]
+    
+    return render(request, 'detail2.html', {'travel':travel, 'travels':travels})
+######
+
 
 def SignupFunction(request):
     return render(request, 'signup.html')
+
 
 ######## 수정 
 def SignupFunction2(request):
