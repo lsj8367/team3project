@@ -8,8 +8,8 @@ from surprise import SVD, accuracy # SVD model, 평가
 from surprise import Reader, Dataset # SVD model의 dataset
 import surprise
 
-filepath = '../travel/static/placerating.csv'
-user_id = 1
+#filepath = '../travel/static/placerating.csv'
+#user_id = 1
 results =[]
 
 def Cal_Svd(filepath, user_id):
@@ -65,6 +65,8 @@ def Cal_Svd(filepath, user_id):
     result = ddff.sort_values(by='est', ascending=False)[:5]
     #print(result)
     results.append(result)
+    
+    return result
 # 
 # if __name__ == '__main__':
 #     Cal_Svd(filepath, user_id)

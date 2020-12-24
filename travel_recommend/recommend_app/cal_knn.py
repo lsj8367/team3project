@@ -11,7 +11,7 @@ path = os.getcwd()
 print(path)
 
 filepath = path + '\travel_recommend\travel\static\datafile\placerating.csv'
-#user_id = 1
+#user_id = 
 
 def Cal_Knn(filepath, user_id):
     results =[]
@@ -19,7 +19,7 @@ def Cal_Knn(filepath, user_id):
     rating = pd.read_csv(filepath)
     rating.head()   #   critic(user)   title(item)   rating
     
-    
+    print(user_id)
     rating['userId'].value_counts()
     rating['placeId'].value_counts()
     
@@ -59,7 +59,8 @@ def Cal_Knn(filepath, user_id):
     for item_id in item_ids :
         if not actual_rating in tab:
             actual_rating = 0
-            predict_result.append(model.predict(user_id, item_id, actual_rating))
+            a = model.predict(user_id, item_id, actual_rating)
+            predict_result.append(a)
     
     ddff = pd.DataFrame(predict_result)
     #print(ddff)
@@ -68,6 +69,6 @@ def Cal_Knn(filepath, user_id):
     result = ddff.sort_values(by='est', ascending=False)[:5]
     
     result.to_csv()
-    #print(result)
+    print(result)
     results.append(result)
-    return results
+    return result
