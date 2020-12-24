@@ -129,10 +129,14 @@ def SearchFunction(request):
         ###
         ### 데이터 분석 받아오는곳
         ###
+        tuser = Tuser.objects.filter(user_name = user_log)
+        for t in tuser:
+            user_id = t.user_id
+        
         path = os.getcwd()
         print(path)
-        filepath = path+'../travel/static/datafile/placerating.csv'
-        abc = recommend_app.cal_knn.Cal_Knn(filepath, request)
+        filepath = path+'/travel_recommend/travel/static/datafile/placerating.csv'
+        abc = recommend_app.cal_knn.Cal_Knn(filepath, user_id)
         #print(results)
         tlist = abc['iid'].values.tolist()
         
@@ -142,7 +146,7 @@ def SearchFunction(request):
         flist = []
         for f in tlist :
             
-            filepath = '../travel/static/datafile/국내여행지.xlsx' 
+            filepath = '/travel_recommend/travel/static/datafile/국내여행지.xlsx' 
             df = pd.read_excel(filepath)   
             tour = df[df['placeId']== f]['검색지명']
             #tour = Travel.objects.filter(placeId = f)

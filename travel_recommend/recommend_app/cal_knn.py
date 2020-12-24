@@ -70,9 +70,3 @@ def Cal_Knn(filepath, user_id):
     result.to_csv()
     #print(result)
     results.append(result)
-
-# if __name__ == '__main__':
-#     Cal_Knn(filepath, user_id)
-#     print(results[0])
-#     print(type(results[0]))         # dataframe     
-#     #print(results[0]['iid'])        # placeId
