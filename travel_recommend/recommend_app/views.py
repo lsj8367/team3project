@@ -9,7 +9,7 @@ from surprise import Reader, Dataset # SVD model의 dataset
 import surprise
 
 
-filepath = 'C:\work\Data_teampro\internal/placerating.csv'
+filepath = '../travel/static/datafile/placerating.csv'
 user_id = ''
 results =  []
 

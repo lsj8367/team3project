@@ -31,10 +31,8 @@ urlpatterns = [
     path('detail', views.DetailFunction),
     path('signup', views.SignupFunction),
     path('signup2', views.SignupFunction2),
-<<<<<<< HEAD
     path('cal_svd',  include('recommend_app.urls')),
     path('cal_knn', include('recommend_app.urls')),
-=======
     path('startajax', views.CossimFunc),
->>>>>>> branch 'main' of https://github.com/KICteam3Project/team3project.git
+
 ]

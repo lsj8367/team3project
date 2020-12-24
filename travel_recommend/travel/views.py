@@ -8,6 +8,9 @@ from travel.weather import Weather
 from travel.cosine_sim import cosinePlace
 import json
 import numpy as np
+import recommend_app
+from recommend_app.cal_knn import results
+
 config = {
     'host':'127.0.0.1',
     'user':'root',
@@ -124,6 +127,10 @@ def SearchFunction(request):
         ###
         ### 데이터 분석 받아오는곳
         ###
+        
+        filepath = '../travel/static/datafile/placerating.csv'
+        recommend_app.cal_knn.Cal_Knn(filepath, request)
+        print(results)
         
         travel = Travel.objects.all()
         tuser = Tuser.objects.all()
