@@ -147,9 +147,11 @@ def SearchFunction(request):
         for f in tlist :
             filepath = path + '/travel_recommend/travel/static/datafile/국내여행지.xlsx' 
             df = pd.read_excel(filepath)   
-            tour = df[df['placeId']== f]['검색지명']
+            tour = df[df['placeId']== f]['검색지명'].values
             #tour = Travel.objects.filter(placeId = f)
-            flist.append(tour)
+            flist.append(" ".join(tour))
+        print(flist)
+        
         #tour = ['여행지1', '여행지2', '여행지3', '여행지4', '여행지5']
 
         context={'travel':search, 'start':start_date, 'end':end_date, 'weather': wlist, 'tour':flist, 'user_log' : user_log}
@@ -199,7 +201,7 @@ def SignupFunction2(request):
         travel3 = request.POST.get('travel3')
         rating3 = request.POST.get('rating3')        
         
-        
+        # csv에 신규정보를 
 
         #유저등록
         if Tuser.objects.filter(user_id = ID).exists() == False:
