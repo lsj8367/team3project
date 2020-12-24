@@ -10,7 +10,8 @@ import json
 import numpy as np
 import recommend_app
 from recommend_app.cal_knn import results
-
+import pandas as pd
+import os
 config = {
     'host':'127.0.0.1',
     'user':'root',
@@ -128,19 +129,29 @@ def SearchFunction(request):
         ###
         ### 데이터 분석 받아오는곳
         ###
-        
-        filepath = '../travel/static/datafile/placerating.csv'
-        recommend_app.cal_knn.Cal_Knn(filepath, request)
-        print(results)
+        path = os.getcwd()
+        print(path)
+        filepath = path+'../travel/static/datafile/placerating.csv'
+        abc = recommend_app.cal_knn.Cal_Knn(filepath, request)
+        #print(results)
+        tlist = abc['iid'].values.tolist()
         
         travel = Travel.objects.all()
         tuser = Tuser.objects.all()
         treview = Treview.objects.all()
         
+        flist = []
+        for f in tlist :
+            
+            filepath = '../travel/static/datafile/국내여행지.xlsx' 
+            df = pd.read_excel(filepath)   
+            tour = df[df['placeId']== f]['검색지명']
+            #tour = Travel.objects.filter(placeId = f)
+            flist.append(tour)
+        #tour = ['여행지1', '여행지2', '여행지3', '여행지4', '여행지5']
 
-        tour = ['여행지1', '여행지2', '여행지3', '여행지4', '여행지5']
-        
-        context={'travel':search, 'start':start_date, 'end':end_date, 'weather': wlist, 'tour':travel, 'user_log' : user_log}
+        context={'travel':search, 'start':start_date, 'end':end_date, 'weather': wlist, 'tour':flist, 'user_log' : user_log}
+
         return render(request, 'main.html', context)
 
 def CossimFunc(request):
