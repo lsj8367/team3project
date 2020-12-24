@@ -1,11 +1,26 @@
 from django.shortcuts import render, redirect
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from travel.models import Travel, Tuser, Treview
-# from travel.utils import get_db_handle, get_collection_handle
+import MySQLdb
+from django.db.models import Max
 from travel.weather import Weather
+from travel.cosine_sim import cosinePlace
+import json
+import numpy as np
+config = {
+    'host':'127.0.0.1',
+    'user':'root',
+    'password':'123',
+    'database':'test',
+    'port':3306,
+    'charset':'utf8',
+    'use_unicode':True
+}
+conn = MySQLdb.connect(**config)
 
 # Create your views here.
+
 def IndexFunc(request):
     return render(request, 'index.html')
 
@@ -119,9 +134,25 @@ def SearchFunction(request):
         
         context={'travel':search, 'start':start_date, 'end':end_date, 'weather': wlist, 'tour':tour, 'user_log' : user_log}
         return render(request, 'main.html', context)
+
+def CossimFunc(request):
+    msg = request.GET['msg']
+    way = request.GET['way']
+    print(msg)
+    df = cosinePlace(msg,way)
+    print(len(df), df.iloc[0].title)
+    datas = []
+    for s in range(len(df)):
+        dic = {'title':df.iloc[s].title, 'area':df.iloc[s].area, 'genre':df.iloc[s].genre, 'weighted_vote':np.round(df.iloc[s].weighted_vote,3)}
+        datas.append(dic)
+    return HttpResponse(json.dumps(datas), content_type = "application/json")
     
     
 def DetailFunction(request):
+    t = request.GET['tour']
+    print(t)
+    
+    
     return render(request, 'detail2.html')
 
 def SignupFunction(request):
@@ -129,20 +160,70 @@ def SignupFunction(request):
 
 def SignupFunction2(request):
     if request.method == 'POST':
+        
         name = request.POST.get('name')
         ID = request.POST.get('ID')
         password = request.POST.get('password')
+        
         travel1 = request.POST.get('travel1')
         rating1 = request.POST.get('rating1')
         travel2 = request.POST.get('travel2')
-        rating2 = request.POST.get('rating2')
+        rating2 = request.POST.get('rating2')        
         travel3 = request.POST.get('travel3')
-        rating3 = request.POST.get('rating3')
+        rating3 = request.POST.get('rating3')        
         
-        print(name, ID, password)
-        print(travel1, travel2, travel3)
-        print(rating1, rating2, rating3)
         
-        return redirect('home')
-    return render(request, 'datail.html')
 
+        #유저등록
+        if Tuser.objects.filter(user_id = ID).exists() == False:
+            Tuser(
+                user_id = ID,
+                user_name = name,
+                user_pwd = password
+            ).save()
+
+        else:
+            ss = """
+            <script> 
+                alert('이미 존재하는 아이디입니다.');
+                history.back();
+            </script>
+            """
+            return render(request, 'signup.html', {'error' : ss})
+             
+        #리뷰등록
+        try:
+            
+            InsertReview(ID, travel1, rating1)
+            InsertReview(ID, travel2, rating2)
+            InsertReview(ID, travel3, rating3)
+        except:
+            ss = '''
+            <script> 
+                alert('존재하는 여행지를 입력해주세요.');
+                history.back();
+            </script>
+            '''
+            return render(request, 'signup.html', {'error' : ss})
+        
+
+    return redirect('home')
+
+def InsertReview(ID, travel, rating):
+    obj = Treview.objects.aggregate(treview_no=Max('treview_no'))
+    no = obj['treview_no'] + 1
+    if no is None:
+        no = 1
+    
+    try :
+        obj = Travel.objects.get(city = travel)
+    except:
+        obj = Travel.objects.get(town = travel)
+    travel = obj.tourid
+    obj = Tuser.objects.get(user_id = ID)
+    
+    
+    sql = "insert into treview values({}, '{}', {}, '{}')".format(no, ID, travel, rating)
+    cursor = conn.cursor()
+    cursor.execute(sql)
+    conn.commit()
