@@ -5,9 +5,6 @@ from travel.models import Travel, Tuser, Treview
 import MySQLdb
 from django.db.models import Max
 from travel.weather import Weather
-conn = MySQLdb.connect(**config)
-########### 수정
-
 config = {
     'host':'127.0.0.1',
     'user':'root',
@@ -17,6 +14,7 @@ config = {
     'charset':'utf8',
     'use_unicode':True
 }
+conn = MySQLdb.connect(**config)
 
 # Create your views here.
 
@@ -136,12 +134,15 @@ def SearchFunction(request):
     
     
 def DetailFunction(request):
+    t = request.GET['tour']
+    print(t)
+    
+    
     return render(request, 'detail2.html')
 
 def SignupFunction(request):
     return render(request, 'signup.html')
 
-######## 수정 
 def SignupFunction2(request):
     if request.method == 'POST':
         
@@ -191,7 +192,7 @@ def SignupFunction2(request):
             return render(request, 'signup.html', {'error' : ss})
         
 
-    return render(request, 'main.html')
+    return redirect('home')
 
 def InsertReview(ID, travel, rating):
     obj = Treview.objects.aggregate(treview_no=Max('treview_no'))
