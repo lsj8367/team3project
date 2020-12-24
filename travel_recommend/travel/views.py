@@ -131,14 +131,17 @@ def SearchFunction(request):
         tuser = Tuser.objects.filter(user_name = user_log)
         for t in tuser:
             user_id = t.user_id
+        print(user_id)
         
         path = os.getcwd()
         print(path)
         filepath = path+'/travel_recommend/travel/static/datafile/placerating.csv'
         results = recommend_app.cal_knn.Cal_Knn(filepath, user_id)
-        print(results[0]['iid'].values)
+        #results = recommend_app.cal_svd.Cal_Svd(filepath, user_id)
+        print(results)
+        print(results['iid'].values)
         
-        tlist = results[0]['iid'].values
+        tlist = results['iid'].values
         
         travel = Travel.objects.all()
         treview = Treview.objects.all()
@@ -226,6 +229,14 @@ def SignupFunction2(request):
             InsertReview(ID, travel1, rating1)
             InsertReview(ID, travel2, rating2)
             InsertReview(ID, travel3, rating3)
+            
+            with open("placerating.csv", "a") as f:
+                f.writelines(['\n','1,','55555,','4.5'])
+                f.close()
+            
+            
+            
+            
         except:
             ss = '''
             <script> 
