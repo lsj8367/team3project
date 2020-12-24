@@ -9,7 +9,7 @@ from surprise import Reader, Dataset # SVD model의 dataset
 import surprise
 
 
-filepath = '../travel/static/datafile/placerating.csv'
+#filepath = '../travel/static/datafile/placerating.csv'
 user_id = ''
 results =  []
 
@@ -72,7 +72,7 @@ def Cal_Svd(filepath, request):
     result.to_excel('C:\work\{}.xlsx'.format(word))
     #print(result)
     results.append(result)
-
+    return result
 
 def Cal_Knn(filepath, request):
     user_id = request.POST.get('ID')
@@ -128,4 +128,4 @@ def Cal_Knn(filepath, request):
     result = ddff.sort_values(by='est', ascending=False)[:5]
     #print(result)
     results.append(result)
-
+    return result
