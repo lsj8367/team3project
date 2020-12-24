@@ -12,7 +12,6 @@ import recommend_app
 from recommend_app.cal_knn import results
 import pandas as pd
 import os
->>>>>>> branch 'main' of https://github.com/KICteam3Project/team3project.git
 config = {
     'host':'127.0.0.1',
     'user':'root',
