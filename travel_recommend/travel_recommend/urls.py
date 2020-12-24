@@ -28,4 +28,5 @@ urlpatterns = [
     path('detail', views.DetailFunction),
     path('signup', views.SignupFunction),
     path('signup2', views.SignupFunction2),
+    path('startajax', views.CossimFunc),
 ]
