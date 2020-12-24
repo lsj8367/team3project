@@ -133,7 +133,7 @@ def SearchFunction(request):
         filepath = path+'../travel/static/datafile/placerating.csv'
         abc = recommend_app.cal_knn.Cal_Knn(filepath, request)
         #print(results)
-        tlist = abc['placeId'].values.tolist()
+        tlist = abc['iid'].values.tolist()
         
         travel = Travel.objects.all()
         tuser = Tuser.objects.all()
