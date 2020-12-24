@@ -1,11 +1,15 @@
 from django.shortcuts import render, redirect
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from travel.models import Travel, Tuser, Treview
 import MySQLdb
 from django.db.models import Max
 from travel.weather import Weather
-########### 수정
+from travel.cosine_sim import cosinePlace
+import json
+import numpy as np
+import recommend_app
+from recommend_app.cal_knn import results
 
 config = {
     'host':'127.0.0.1',
@@ -16,6 +20,7 @@ config = {
     'charset':'utf8',
     'use_unicode':True
 }
+conn = MySQLdb.connect(**config)
 
 conn = MySQLdb.connect(**config)
 # Create your views here.
@@ -124,6 +129,10 @@ def SearchFunction(request):
         ### 데이터 분석 받아오는곳
         ###
         
+        filepath = '../travel/static/datafile/placerating.csv'
+        recommend_app.cal_knn.Cal_Knn(filepath, request)
+        print(results)
+        
         travel = Travel.objects.all()
         tuser = Tuser.objects.all()
         treview = Treview.objects.all()
@@ -133,9 +142,22 @@ def SearchFunction(request):
         
         context={'travel':search, 'start':start_date, 'end':end_date, 'weather': wlist, 'tour':travel, 'user_log' : user_log}
         return render(request, 'main.html', context)
+
+def CossimFunc(request):
+    msg = request.GET['msg']
+    way = request.GET['way']
+    print(msg)
+    df = cosinePlace(msg,way)
+    print(len(df), df.iloc[0].title)
+    datas = []
+    for s in range(len(df)):
+        dic = {'title':df.iloc[s].title, 'area':df.iloc[s].area, 'genre':df.iloc[s].genre, 'weighted_vote':np.round(df.iloc[s].weighted_vote,3)}
+        datas.append(dic)
+    return HttpResponse(json.dumps(datas), content_type = "application/json")
     
 ###### 수정 20201224
 def DetailFunction(request):
+
     travel_id = request.GET.get('travel_id')
     travel = Travel.objects.get(tourid = travel_id)
     
@@ -144,14 +166,12 @@ def DetailFunction(request):
     travels = travels[:5]
     
     return render(request, 'detail2.html', {'travel':travel, 'travels':travels})
-######
 
 
 def SignupFunction(request):
     return render(request, 'signup.html')
 
 
-######## 수정 
 def SignupFunction2(request):
     if request.method == 'POST':
         
@@ -201,7 +221,7 @@ def SignupFunction2(request):
             return render(request, 'signup.html', {'error' : ss})
         
 
-    return render(request, 'main.html')
+    return redirect('home')
 
 def InsertReview(ID, travel, rating):
     obj = Treview.objects.aggregate(treview_no=Max('treview_no'))

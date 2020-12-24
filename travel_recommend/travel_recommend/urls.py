@@ -16,6 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from travel import views
+import recommend_app
+from django.urls.conf import include
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,4 +31,8 @@ urlpatterns = [
     path('detail', views.DetailFunction),
     path('signup', views.SignupFunction),
     path('signup2', views.SignupFunction2),
+    path('cal_svd',  include('recommend_app.urls')),
+    path('cal_knn', include('recommend_app.urls')),
+    path('startajax', views.CossimFunc),
+
 ]
