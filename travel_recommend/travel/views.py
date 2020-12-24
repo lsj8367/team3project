@@ -23,6 +23,7 @@ config = {
 }
 conn = MySQLdb.connect(**config)
 
+conn = MySQLdb.connect(**config)
 # Create your views here.
 
 def IndexFunc(request):
@@ -148,8 +149,9 @@ def SearchFunction(request):
             #tour = Travel.objects.filter(placeId = f)
             flist.append(tour)
         #tour = ['여행지1', '여행지2', '여행지3', '여행지4', '여행지5']
-        
+
         context={'travel':search, 'start':start_date, 'end':end_date, 'weather': wlist, 'tour':flist, 'user_log' : user_log}
+
         return render(request, 'main.html', context)
 
 def CossimFunc(request):
@@ -164,16 +166,22 @@ def CossimFunc(request):
         datas.append(dic)
     return HttpResponse(json.dumps(datas), content_type = "application/json")
     
-    
+###### 수정 20201224
 def DetailFunction(request):
-    t = request.GET['tour']
-    print(t)
+
+    travel_id = request.GET.get('travel_id')
+    travel = Travel.objects.get(tourid = travel_id)
     
+    travels =  Travel.objects.filter(city = travel.city)|Travel.objects.filter(town = travel.town)
+    # select * from travel where city = ? or town =? limit 5;
+    travels = travels[:5]
     
-    return render(request, 'detail2.html')
+    return render(request, 'detail2.html', {'travel':travel, 'travels':travels})
+
 
 def SignupFunction(request):
     return render(request, 'signup.html')
+
 
 def SignupFunction2(request):
     if request.method == 'POST':
