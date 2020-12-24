@@ -559,7 +559,7 @@ $(document).ready(function(){
 		<h3>여행지 추천</h3>
 		{% for t in tour %}
 			<div class="card card-3">
-			<a href="detail?tour={{t}}">{{t}}</a>
+				{{t}}
 			<input type = 'hidden' id = 'txtArea{{forloop.counter}}' value = '{{t}}'/>
 			<button type = 'button' class="btn btn-outline-secondary" id = 'btn{{forloop.counter}}'>장르기반</button>
 			<button type = 'button' class="btn btn-outline-secondary"  id = 'btn_{{forloop.counter}}'>장소기반</button>

@@ -5,10 +5,14 @@ import pandas as pd
 from surprise import SVD, accuracy 
 from surprise import Reader, Dataset 
 import surprise
+import os
 
-filepath = 'C:\work\Data_teampro\internal/placerating.csv'
+path = os.getcwd()
+print(path)
+
+filepath = path + '\travel_recommend\travel\static\datafile\placerating.csv'
 results =[]
-user_id = 1
+#user_id = 1
 
 def Cal_Knn(filepath, user_id):
     # 1. raw dataset
@@ -66,9 +70,3 @@ def Cal_Knn(filepath, user_id):
     result.to_csv()
     #print(result)
     results.append(result)
-
-if __name__ == '__main__':
-    Cal_Knn(filepath, user_id)
-    print(results[0])
-    print(type(results[0]))         # dataframe     
-    #print(results[0]['iid'])        # placeId
